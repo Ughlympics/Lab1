@@ -32,9 +32,9 @@ namespace UnitTest1
         TEST_METHOD(TestEncrypt)
         {
             // Test empty string
-            std::string a;
+          
             Assert::IsTrue(encrypt("") == "");
-            Assert::
+           
             // Test string with lowercase letters
             Assert::IsTrue(encrypt("abcdefghijklmnopqrstuvwxyz") == "nopqrstuvwxyzabcdefghijklm");
 
@@ -43,6 +43,68 @@ namespace UnitTest1
 
             // Test string with mixed case letters
             Assert::IsTrue(encrypt("AbCdEfGhIjKlMnOpQrStUvWxYz") == "NoPqRsTuVwXyZaBcDeFgHiJkLm");
+        }
+        TEST_METHOD(testStdinReading)
+        {
+            std::stringstream input("test input");
+            std::stringstream output;
+            std::stringstream error;
+
+            std::streambuf* origIn = std::cin.rdbuf(input.rdbuf());
+            std::streambuf* origOut = std::cout.rdbuf(output.rdbuf());
+            std::streambuf* origErr = std::cerr.rdbuf(error.rdbuf());
+
+            std::string b = "test input";
+            rot13(b);
+
+            std::cin.rdbuf(origIn);
+            std::cout.rdbuf(origOut);
+            std::cerr.rdbuf(origErr);
+
+            Assert::IsTrue(output.str() == "grfg vachg", L"ass");
+            Assert::IsTrue(error.str().empty());
+        }
+        TEST_METHOD(testStderrOutput)
+        {
+            // stderr
+            std::stringstream input("");
+            std::stringstream output;
+            std::stringstream error;
+
+            std::streambuf* origIn = std::cin.rdbuf(input.rdbuf());
+            std::streambuf* origOut = std::cout.rdbuf(output.rdbuf());
+            std::streambuf* origErr = std::cerr.rdbuf(error.rdbuf());
+
+            std::string c = "";
+            rot13(c);
+
+            std::cin.rdbuf(origIn);
+            std::cout.rdbuf(origOut);
+            std::cerr.rdbuf(origErr);
+
+            Assert::IsTrue(output.str().empty());
+            Assert::IsTrue(!error.str().empty());
+        }
+
+        TEST_METHOD(testStdinReading) 
+        {
+            //on output
+            std::stringstream input("123"); // 
+            std::stringstream output;
+            std::stringstream error;
+
+            std::streambuf* origIn = std::cin.rdbuf(input.rdbuf());
+            std::streambuf* origOut = std::cout.rdbuf(output.rdbuf());
+            std::streambuf* origErr = std::cerr.rdbuf(error.rdbuf());
+
+            std::string a = "123";
+            int exitCode = rot13(a);
+
+            std::cin.rdbuf(origIn);
+            std::cout.rdbuf(origOut);
+            std::cerr.rdbuf(origErr);
+
+            Assert::IsTrue(exitCode != 0);
         }
     
 	};
