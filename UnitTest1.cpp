@@ -98,7 +98,7 @@ namespace UnitTest1
             std::streambuf* origErr = std::cerr.rdbuf(error.rdbuf());
 
             std::string a = "123";
-            int exitCode = rot13(a);
+            int exitCode = main();
 
             std::cin.rdbuf(origIn);
             std::cout.rdbuf(origOut);
