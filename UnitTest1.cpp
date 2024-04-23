@@ -125,7 +125,7 @@ namespace UnitTest1
             std::cout.rdbuf(origOut);
             std::cerr.rdbuf(origErr);
 
-            Assert::IsTrue(exitCode != 1);
+            Assert::IsTrue(exitCode == 0);
         }
     
 	};
