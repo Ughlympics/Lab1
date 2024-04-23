@@ -54,37 +54,35 @@ namespace UnitTest1
             std::streambuf* origOut = std::cout.rdbuf(output.rdbuf());
             std::streambuf* origErr = std::cerr.rdbuf(error.rdbuf());
 
-            main();
-
+            int exitCode = main();
+            std::string a = "grfg vachg\n";
             std::cin.rdbuf(origIn);
             std::cout.rdbuf(origOut);
             std::cerr.rdbuf(origErr);
 
-            Assert::AreEqual("oLoLo", "ololo", true);
+            Assert::AreEqual(a , output.str());
             Assert::IsTrue(error.str().empty());
+            Assert::IsTrue(exitCode == 0);
         }
         TEST_METHOD(testStderrOutput)
         {
             // stderr
-            std::stringstream input("");
+            std::stringstream input("\n");
             std::stringstream output;
             std::stringstream error;
 
             std::streambuf* origIn = std::cin.rdbuf(input.rdbuf());
             std::streambuf* origOut = std::cout.rdbuf(output.rdbuf());
             std::streambuf* origErr = std::cerr.rdbuf(error.rdbuf());
-
             
-            char c = 0;
-            
-            rot13(c);
+            main();
 
             std::cin.rdbuf(origIn);
             std::cout.rdbuf(origOut);
             std::cerr.rdbuf(origErr);
 
             Assert::IsTrue(output.str().empty());
-            Assert::IsTrue(error.str().empty());
+            Assert::IsTrue(!error.str().empty());
         }
 
         TEST_METHOD(testStdoutnotzero)
